@@ -1,0 +1,20 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "mkttray.mysql.dbaas.com.br",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "database",
+            "group": "database",
+            "database": "mkttray",
+            "username": "mkttray",
+            "password": "Meg@321"
+        }
+    ]
+}
