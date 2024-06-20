@@ -22,7 +22,8 @@ public class PessoaServico {
 		}
 		
 
-		public ResponseEntity<?> cadastrar(PessoaModelo pessoa){
+		public ResponseEntity<?> cadastrarAlterar(PessoaModelo pessoa, String acao){
+			
 			if (pessoa.nome.equals("")) {
 				respostamodelo.mensagem = "O nome da pessoa é obrigatório!";
 				return new ResponseEntity<RespostaModelo>(respostamodelo,HttpStatus.BAD_REQUEST);
@@ -30,8 +31,19 @@ public class PessoaServico {
 				respostamodelo.mensagem = "O cpf da pessoa é obrigatório!";
 				return new ResponseEntity<RespostaModelo>(respostamodelo,HttpStatus.BAD_REQUEST);
 			} else {
-				return new ResponseEntity<PessoaModelo>(pessoarepositorio.save(pessoa),HttpStatus.CREATED);
+				if (acao.equals("cadastrar"))
+					return new ResponseEntity<PessoaModelo>(pessoarepositorio.save(pessoa),HttpStatus.CREATED);
+				else if (acao.equals("alterar")){
+					return new ResponseEntity<PessoaModelo>(pessoarepositorio.save(pessoa),HttpStatus.OK);
+				}
 			}
+			return null;
 		}
 		
+		public ResponseEntity<RespostaModelo> remover(long id){
+			pessoarepositorio.deleteById(id);
+			
+			respostamodelo.mensagem = "Pessoa foi excluída com sucesso!";
+			return new ResponseEntity<RespostaModelo>(respostamodelo,HttpStatus.OK);
+		}
 }
