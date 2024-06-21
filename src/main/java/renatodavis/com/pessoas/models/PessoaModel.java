@@ -17,4 +17,5 @@ public class PessoaModel {
     public Long id;
     public String nome;
     public String cpf;
+    public boolean ativo;
 }

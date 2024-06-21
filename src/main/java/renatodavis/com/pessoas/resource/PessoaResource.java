@@ -1,15 +1,18 @@
 package renatodavis.com.pessoas.resource;
 
-import org.hibernate.query.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import renatodavis.com.pessoas.models.PessoaModel;
 import renatodavis.com.pessoas.service.PessoaService;
 
+import java.util.Optional;
 
-@RestController("/api/pessoas")
+@RestController
+@RequestMapping("/api/pessoas")
 public class PessoaResource {
 
+    @Autowired
     private final PessoaService pessoaservice;
 
     public PessoaResource(PessoaService pessoaservice) {
@@ -27,12 +30,12 @@ public class PessoaResource {
     }
 
     @PutMapping
-    public ResponseEntity<PessoaModel> alterar(@RequestBody PessoaModel pessoa) {
+    public ResponseEntity<Optional<PessoaModel>> alterar(@RequestBody PessoaModel pessoa) {
         return ResponseEntity.ok(pessoaservice.cadastrar(pessoa));
     }
 
     @PostMapping
-    public ResponseEntity<PessoaModel> cadastrar(@RequestBody PessoaModel pessoa) {
+    public ResponseEntity<Optional<PessoaModel>> cadastrar(@RequestBody PessoaModel pessoa) {
         return ResponseEntity.ok(pessoaservice.cadastrar(pessoa));
     }
 }
