@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import renatodavis.com.pessoas.models.PessoaModel;
 import renatodavis.com.pessoas.service.PessoaService;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/pessoas")
 public class PessoaResource {
@@ -24,18 +22,28 @@ public class PessoaResource {
         return pessoaservice.listar();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/excluir/{id}")
     public void remover(@PathVariable long id) {
         pessoaservice.remover(id);
     }
 
     @PutMapping
-    public ResponseEntity<Optional<PessoaModel>> alterar(@RequestBody PessoaModel pessoa) {
+    public ResponseEntity<PessoaModel> alterar(@RequestBody PessoaModel pessoa) {
         return ResponseEntity.ok(pessoaservice.cadastrar(pessoa));
     }
 
     @PostMapping
-    public ResponseEntity<Optional<PessoaModel>> cadastrar(@RequestBody PessoaModel pessoa) {
+    public ResponseEntity<PessoaModel> cadastrar(@RequestBody PessoaModel pessoa) {
         return ResponseEntity.ok(pessoaservice.cadastrar(pessoa));
+    }
+
+    @PutMapping("/desativar/{id}")
+    public ResponseEntity<PessoaModel> desativarPessoa(@PathVariable long id) {
+        return ResponseEntity.ok(pessoaservice.desativarPessoa(id));
+    }
+
+    @PutMapping("/ativar/{id}")
+    public ResponseEntity<PessoaModel> ativarPessoa(@PathVariable long id) {
+        return ResponseEntity.ok(pessoaservice.ativarPessoa(id));
     }
 }

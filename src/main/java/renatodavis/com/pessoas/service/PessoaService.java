@@ -1,10 +1,10 @@
 package renatodavis.com.pessoas.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import renatodavis.com.pessoas.models.PessoaModel;
 import renatodavis.com.pessoas.repository.PessoaRepository;
-
-import java.util.Optional;
 
 @Service
 public class PessoaService {
@@ -23,14 +23,35 @@ public class PessoaService {
         pessoarepository.deleteById(id);
     }
 
-    public Optional<PessoaModel> cadastrar(PessoaModel pessoa) {
-        if (validarstatus(pessoa)) {
-            return Optional.of(pessoarepository.save(pessoa));
-        }
-        return Optional.empty();
+    public PessoaModel cadastrar(PessoaModel pessoa) {
+        return pessoarepository.save(pessoa);
     }
 
-    private boolean validarstatus(PessoaModel pessoa) {
-        return pessoa.ativo;
+    public PessoaModel desativarPessoa(long id) {
+        PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
+        pessoaAtualizada.ativo = false;
+        return pessoarepository.save(pessoaAtualizada);
+    }
+
+    public PessoaModel ativarPessoa(long id) {
+        PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
+        pessoaAtualizada.ativo = true;
+        return pessoarepository.save(pessoaAtualizada);
+    }
+
+    private PessoaModel validarStatus(PessoaModel pessoa) {
+        if (!pessoa.ativo) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Não foi possível salvar " +
+                    "o cadastro da pessoa " + pessoa.nome);
+        }
+        return pessoa;
+    }
+
+    private PessoaModel validarLimiteCredito(PessoaModel pessoa, Double valor) {
+        if (valor > pessoa.limiteCredito) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Limite de crédito excedido! " +
+                    " " + pessoa.nome + " limite atual = " + pessoa.limiteCredito);
+        }
+        return pessoa;
     }
 }

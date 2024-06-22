@@ -1,10 +1,6 @@
 package renatodavis.com.pessoas.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -17,5 +13,7 @@ public class PessoaModel {
     public Long id;
     public String nome;
     public String cpf;
-    public boolean ativo;
+    public Boolean ativo = true;
+    public Double limiteCredito = 0.0;
+
 }

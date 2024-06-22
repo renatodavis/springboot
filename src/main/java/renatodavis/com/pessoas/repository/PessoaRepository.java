@@ -7,4 +7,5 @@ import renatodavis.com.pessoas.models.PessoaModel;
 
 @Repository
 public interface PessoaRepository extends CrudRepository<PessoaModel, Long>{
+
 }
