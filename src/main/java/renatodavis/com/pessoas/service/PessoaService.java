@@ -1,8 +1,7 @@
 package renatodavis.com.pessoas.service;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import renatodavis.com.pessoas.exception.RegraDeNegocioException;
 import renatodavis.com.pessoas.models.PessoaModel;
 import renatodavis.com.pessoas.repository.PessoaRepository;
 
@@ -19,37 +18,39 @@ public class PessoaService {
         return pessoarepository.findAll();
     }
 
-    public void remover(Long id) {
+    public void remover(Long id) throws RegraDeNegocioException {
+        PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
+        pessoaAtualizada.ativo = false;
+        validarStatus (pessoaAtualizada);
         pessoarepository.deleteById(id);
     }
 
-    public PessoaModel cadastrar(PessoaModel pessoa) {
+    public PessoaModel cadastrar(PessoaModel pessoa) throws RegraDeNegocioException {
         return pessoarepository.save(pessoa);
     }
 
-    public PessoaModel desativarPessoa(long id) {
+    public PessoaModel desativarPessoa(long id) throws RegraDeNegocioException{
         PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
         pessoaAtualizada.ativo = false;
         return pessoarepository.save(pessoaAtualizada);
     }
 
-    public PessoaModel ativarPessoa(long id) {
+    public PessoaModel ativarPessoa(long id) throws RegraDeNegocioException{
         PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
         pessoaAtualizada.ativo = true;
         return pessoarepository.save(pessoaAtualizada);
     }
 
-    private PessoaModel validarStatus(PessoaModel pessoa) {
+    protected PessoaModel validarStatus(PessoaModel pessoa) throws RegraDeNegocioException {
         if (!pessoa.ativo) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Não foi possível salvar " +
-                    "o cadastro da pessoa " + pessoa.nome);
+            throw new RegraDeNegocioException("O status da pessoa está inativo! pessoa " + pessoa.nome);
         }
         return pessoa;
     }
 
-    private PessoaModel validarLimiteCredito(PessoaModel pessoa, Double valor) {
+    private PessoaModel validarLimiteCredito(PessoaModel pessoa, Double valor) throws RegraDeNegocioException{
         if (valor > pessoa.limiteCredito) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Limite de crédito excedido! " +
+            throw new RegraDeNegocioException("Limite de crédito excedido! " +
                     " " + pessoa.nome + " limite atual = " + pessoa.limiteCredito);
         }
         return pessoa;

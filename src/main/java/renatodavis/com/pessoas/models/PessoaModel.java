@@ -3,11 +3,12 @@ package renatodavis.com.pessoas.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
+
 @Data
 @Table(name ="Pessoa")
+@Entity
 public class PessoaModel {
-    
+
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     public Long id;
