@@ -20,7 +20,6 @@ public class PessoaService {
 
     public void remover(Long id) throws RegraDeNegocioException {
         PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
-        pessoaAtualizada.ativo = false;
         validarStatus (pessoaAtualizada);
         pessoarepository.deleteById(id);
     }
@@ -43,7 +42,7 @@ public class PessoaService {
 
     protected PessoaModel validarStatus(PessoaModel pessoa) throws RegraDeNegocioException {
         if (!pessoa.ativo) {
-            throw new RegraDeNegocioException("O status da pessoa está inativo! pessoa " + pessoa.nome);
+            throw new RegraDeNegocioException("O status da pessoa está inativo!");
         }
         return pessoa;
     }
