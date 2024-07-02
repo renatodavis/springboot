@@ -15,12 +15,12 @@ import java.time.LocalDate;
 public class VendaPedidoServiceTest {
 
     @Autowired
-    VendaPedidoService vendaPedidoService ;
+    VendaPedidoService vendaPedidoService;
 
     @Autowired
     PessoaService pessoaService;
 
-     @Test
+    @Test
     public void testVendaPedidoCadastrar() throws RegraDeNegocioException {
 
         PessoaModel pessoa = new PessoaModel();
@@ -37,12 +37,10 @@ public class VendaPedidoServiceTest {
         vendaPedido.setDataPedido(data_pedido);
         vendaPedido.setCliente(pessoa);
         vendaPedido.setStatusPedido(VendaPedido.StatusPedido.ATENDIDO);
-        //vendaPedidoService.remover(vendaPedido);
-        //vendaPedidoService.cadastrar(vendaPedido);
-        //incluir o Assert
     }
+
     @Test
-    public void testVendaPedidoClienteInativoj(){
+    public void testVendaPedidoClienteInativoj() {
 
         PessoaModel pessoa = new PessoaModel();
         pessoa.setId(1L);
@@ -60,8 +58,9 @@ public class VendaPedidoServiceTest {
         vendaPedido.setStatusPedido(VendaPedido.StatusPedido.ATENDIDO);
         Assertions.assertFalse(vendaPedido.isValid());
     }
+
     @Test
-    public void testVendaPedidoClienteDataPedidMenorDataAtual(){
+    public void testVendaPedidoClienteDataPedidMenorDataAtual() {
         PessoaModel pessoa = new PessoaModel();
         pessoa.setId(1L);
         pessoa.setNome("Renato Davis");
@@ -69,7 +68,7 @@ public class VendaPedidoServiceTest {
         pessoa.setLimiteCredito(1000.0);
         pessoa.setAtivo(true); //cliente inativo
 
-        LocalDate data_pedido = LocalDate.of(2024,06,30);
+        LocalDate data_pedido = LocalDate.of(2024, 06, 30);
 
         VendaPedido vendaPedido = new VendaPedido();
         vendaPedido.setId(1L);
