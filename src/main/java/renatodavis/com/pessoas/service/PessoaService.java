@@ -34,36 +34,36 @@ public class PessoaService {
     }
 
     public PessoaModel alterarPessoa(PessoaModel pessoa) throws RegraDeNegocioException{
-        PessoaModel pessoaAtualizada = pessoarepository.findById(pessoa.id).get();
-        if (!pessoaAtualizada.equals(null)){
+        Optional<PessoaModel> pessoaAtualizada = pessoarepository.findById(pessoa.getId());
+        if (pessoaAtualizada.isPresent()){
             pessoarepository.save(pessoa);
         }
         return pessoa;
     }
 
     public PessoaModel desativarPessoa(long id) throws RegraDeNegocioException{
-        PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
-        pessoaAtualizada.ativo = false;
-        return pessoarepository.save(pessoaAtualizada);
+        Optional<PessoaModel> pessoaAtualizada = pessoarepository.findById(id);
+        pessoaAtualizada.ifPresent(pessoaModel -> pessoaModel.setAtivo(false));
+        return pessoarepository.save(pessoaAtualizada.get());
     }
 
     public PessoaModel ativarPessoa(long id) throws RegraDeNegocioException{
-        PessoaModel pessoaAtualizada = pessoarepository.findById(id).get();
-        pessoaAtualizada.ativo = true;
-        return pessoarepository.save(pessoaAtualizada);
+        Optional<PessoaModel> pessoaAtualizada = pessoarepository.findById(id);
+        pessoaAtualizada.ifPresent(pessoaModel -> pessoaModel.setAtivo(true));
+        return pessoarepository.save(pessoaAtualizada.get());
     }
 
     protected PessoaModel validarStatus(PessoaModel pessoa) throws RegraDeNegocioException {
-        if (!pessoa.ativo) {
+        if (!pessoa.getAtivo()) {
             throw new RegraDeNegocioException("O status da pessoa está inativo!");
         }
         return pessoa;
     }
 
     private PessoaModel validarLimiteCredito(PessoaModel pessoa, Double valor) throws RegraDeNegocioException{
-        if (valor > pessoa.limiteCredito) {
+        if (valor > pessoa.getLimiteCredito()) {
             throw new RegraDeNegocioException("Limite de crédito excedido! " +
-                    " " + pessoa.nome + " limite atual = " + pessoa.limiteCredito);
+                    " " + pessoa.getNome() + " limite atual = " + pessoa.getLimiteCredito());
         }
         return pessoa;
     }

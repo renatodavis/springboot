@@ -22,12 +22,11 @@ public class PessoaResource {
 
     @GetMapping
     public Iterable<PessoaModel> listar() {
-
         return pessoaservice.listar();
     }
 
     @GetMapping("/{id}")
-    public Optional<PessoaModel> getCliente(@PathVariable long id)  {
+    public Optional<PessoaModel> getCliente(@PathVariable long id) {
         return pessoaservice.getPessoa(id);
     }
 
@@ -37,22 +36,22 @@ public class PessoaResource {
     }
 
     @PostMapping
-    public ResponseEntity<PessoaModel> cadastrar(@RequestBody PessoaModel pessoa) throws RegraDeNegocioException{
+    public ResponseEntity<PessoaModel> cadastrar(@RequestBody PessoaModel pessoa) throws RegraDeNegocioException {
         return ResponseEntity.ok(pessoaservice.cadastrar(pessoa));
     }
 
     @PutMapping("/alterar")
-    public ResponseEntity<PessoaModel> alterarPessoa(@RequestBody PessoaModel pessoa) throws RegraDeNegocioException{
+    public ResponseEntity<PessoaModel> alterarPessoa(@RequestBody PessoaModel pessoa) throws RegraDeNegocioException {
         return ResponseEntity.ok(pessoaservice.alterarPessoa(pessoa));
     }
 
     @PutMapping("/desativar/{id}")
-    public ResponseEntity<PessoaModel> desativarPessoa(@PathVariable long id) throws RegraDeNegocioException{
+    public ResponseEntity<PessoaModel> desativarPessoa(@PathVariable long id) throws RegraDeNegocioException {
         return ResponseEntity.ok(pessoaservice.desativarPessoa(id));
     }
 
     @PutMapping("/ativar/{id}")
-    public ResponseEntity<PessoaModel> ativarPessoa(@PathVariable long id) throws RegraDeNegocioException{
+    public ResponseEntity<PessoaModel> ativarPessoa(@PathVariable long id) throws RegraDeNegocioException {
         return ResponseEntity.ok(pessoaservice.ativarPessoa(id));
     }
 }
